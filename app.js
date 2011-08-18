@@ -82,8 +82,8 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', login_required, function(req, res){
-  var room = new GamePlay();
-  Store.Rooms.push(room);
+  var gamePlay = new GamePlay();
+  Store.Rooms.push(gamePlay);
   res.render('index', {
     rooms: Store.Rooms
   });
