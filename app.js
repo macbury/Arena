@@ -91,6 +91,11 @@ app.get('/', login_required, function(req, res){
   });
 });
 
+app.get('/rooms/new', login_required, function(req, res){
+  res.render('new_room', {});
+});
+
+
 app.listen(3000);
 io.listen(app);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
