@@ -1,0 +1,7 @@
+h1 Arena Rooms
+
+ul
+  - each room in rooms
+    li
+      = room.id
+      a(href='/rooms/'+room.id) Enter Game
