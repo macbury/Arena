@@ -82,9 +82,7 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', login_required, function(req, res){
-  var gamePlay = new GamePlay();
-  Store.Rooms.push(gamePlay);
+app.get('/', function(req, res){
   res.render('index', {
     rooms: Store.Rooms,
     players: Store.Players
@@ -95,6 +93,15 @@ app.get('/rooms/new', login_required, function(req, res){
   res.render('new_room', {});
 });
 
+app.post("/rooms", login_required, function(req, res){
+  var room = new GamePlay(req.params["room"]);
+  Store.Rooms.push(room);
+  res.redirect('/rooms/'+room.id);
+});
+
+app.get('/rooms/:id', login_required, function(req, res){
+  res.render('new_room', {});
+});
 
 app.listen(3000);
 io.listen(app);
