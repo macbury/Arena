@@ -1,19 +1,26 @@
 var _ = require('underscore');
+var GameObject = require("./game_object").GameObject;
 
-function Player (socket) {
-  this.socket = socket;
-  this.health = this.maxHealth;
-}
-
-_.extend(Player.prototype, {
+var Player = GameObject.extend({
   x: 0,
   y: 0,
   rotation: 0,
   
+  fb_id: null,
+  
   maxHealth: 100,
   health: 0,
   
-  name: "Anynomus",
+  attributes: {
+    name: "Anynomus",
+    health: 0,
+  },
+  
+  initialize: function(attributes) {
+    this.set({
+      'health': this.maxHealth
+    });
+  }
 });
 
 exports.Player = Player;

@@ -1,7 +1,17 @@
 h1 Arena Rooms
 
+
 ul
   - each room in rooms
     li
-      = room.cid + " "
-      a(href='/rooms/'+room.cid) Enter Game
+      = room.id + " "
+      a(href='/rooms/'+room.id) Enter Game
+      
+h2 Arena Plauers
+
+
+ul
+  - each player in players
+    li
+      = player.id + " "
+      = player.get("name");

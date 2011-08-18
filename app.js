@@ -42,12 +42,13 @@ everyauth.facebook
     session.user_id = fbUserMetadata.id;
     session.access_token = accessToken;
     
-    var player = _.detect(Store.Players, function(p){ p.id == session.user_id });
+    var player = _.detect(Store.Players, function(p){ return parseInt(p.id) == parseInt(session.user_id) });
     
     if(player == null) {
-      var player = new Player();
-      player.id = fbUserMetadata.id;
-      player.login = fbUserMetadata.name;
+      var player = new Player({
+        id: session.user_id,
+        name: fbUserMetadata.name
+      });
       Store.Players.push(player);
     }
     
@@ -85,7 +86,8 @@ app.get('/', login_required, function(req, res){
   var gamePlay = new GamePlay();
   Store.Rooms.push(gamePlay);
   res.render('index', {
-    rooms: Store.Rooms
+    rooms: Store.Rooms,
+    players: Store.Players
   });
 });
 

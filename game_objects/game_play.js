@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var GameObject = require("./game_object").GameObject;
 var Config = {
-  updatesPerSecond: 60
+  updatesPerSecond: 20
 };
 
 GamePlay = GameObject.extend({

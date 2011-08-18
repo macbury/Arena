@@ -10,7 +10,7 @@ var GameObject = function (attributes, options) {
   }
   this.attributes = {};
   this._escapedAttributes = {};
-  this.cid = _.uniqueId(this.prefix);
+  this.id = _.uniqueId(this.prefix);
   this.set(attributes, {silent : true});
   this._changed = false;
   this._previousAttributes = _.clone(this.attributes);
