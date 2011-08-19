@@ -135,7 +135,7 @@ socket.configure(function (){
 });
 
 socket.sockets.on('connection', function (client) {
-  //console.log(client.request); 
+  //console.log(socket.handshake.sid); /
   /*socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
     console.log(data);
