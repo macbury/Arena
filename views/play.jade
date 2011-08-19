@@ -1,7 +1,7 @@
 script(src="/socket.io/socket.io.js")
 script  
   var socket = io.connect('http://localhost',{
-    query: "access_token=abcdefg"
+    query: "sid=#{sid}"
   });
   
   socket.on('connect', function () {

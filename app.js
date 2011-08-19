@@ -19,7 +19,7 @@ var Store = {
 
 function login_required(req, res, next){
   if(req.session.user_id) {
-    req.user = {};
+    req.user = _.detect(Store.Players, function(p){ return parseInt(p.id) == parseInt(req.session.user_id) });
     next(); 
   } else {
     res.redirect('/auth/facebook');
@@ -72,6 +72,12 @@ app.configure(function(){
   app.use(everyauth.middleware());
 });
 
+app.dynamicHelpers({
+  current_user: function(req, res){
+    return req.user;
+  }
+});
+
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
@@ -94,17 +100,19 @@ app.get('/rooms/new', login_required, function(req, res){
 });
 
 app.post("/rooms", login_required, function(req, res){
-  console.log(req.params);
-  console.log(req.body.room);
+  //console.log(req.params);
+  //console.log(req.body.room);
   var room = new GamePlay(req.body.room);
   Store.Rooms.push(room);
   res.redirect('/rooms/'+room.id);
 });
 
 app.get('/rooms/:id', login_required, function(req, res){
-  var room = Store.Rooms[0];//_.detect(Store.Rooms, function(r){ return parseInt(r.id) == parseInt(req.params['id']) });
+  var room = _.detect(Store.Rooms, function(r){ return r.id == req.params['id'] });
   if (room) {
-    res.render('play', {});
+    req.user.join(room);
+    //console.log(room.players);
+    res.render('play', { sid: req.user.get('sid') });
   } else {
     throw new NotFound;
   }
@@ -116,8 +124,8 @@ socket = io.listen(app);
 socket.configure(function (){
   socket.set('authorization', function (handshakeData, callback) {
     console.log('authorizing...');
-    console.log(handshakeData);
-    
+    var sid = handshakeData.query.sid;
+    console.log(sid);
     if (sid) {
       callback(null, sid);
     } else {

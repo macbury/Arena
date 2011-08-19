@@ -25,6 +25,15 @@ GamePlay = GameObject.extend({
   update: function(dt) {
     
   },
+  
+  findPlayer: function(player) {
+    return _.detect(this.players, function(p){ return parseInt(p.id) == parseInt(player.id) });
+  },
+  
+  hasPlayer: function(player) {
+    return (this.findPlayer(player) != null);
+  },
+  
   tick: function() {
     var currentTime = new Date() * 1;
     var deltaTime = currentTime - this.lastTick;
@@ -32,9 +41,25 @@ GamePlay = GameObject.extend({
     this.trigger('update',deltaTime);
   },
   
-  join: function(player) {
-    
-  },
+  enter: function(player) {
+    if (this.hasPlayer(player)) {
+      console.log("Player "+player.get("name")+" is alredy joined room "+this.get('name'));
+    } else {
+      console.log("Player "+player.get("name")+" enters room "+this.get('name'));
+      this.players.push(player);
+    }
+  }, 
+  
+  exit: function(player) {
+    var self = this;
+    console.log("Player "+player.get("name")+" exits room "+this.get('name'));
+    _.each(this.players, function(p, pos) {
+      if (parseInt(p.id) == parseInt(player.id)) {
+        self.players.splice(pos, 1);
+      } 
+    });
+    player.disconnect();
+  }
 });
 
 

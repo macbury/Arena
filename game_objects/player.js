@@ -15,12 +15,35 @@ var Player = GameObject.extend({
   attributes: {
     name: "Anynomus",
     health: 0,
+    current_room: null,
+    sid: null,
   },
   
   initialize: function(attributes) {
     this.set({
-      'health': this.maxHealth
+      'health': this.maxHealth,
+      "sid": Base.generate_uid()
     });
+  },
+  
+  join: function(new_room) {
+    if (this.get('current_room')) {
+      var room = this.get('current_room');
+      room.exit(this);
+    }
+
+    this.set({
+      "current_room": new_room,
+      "sid": Base.generate_uid()
+    });
+    
+    if (new_room) {
+      new_room.enter(this);
+    }
+  },
+  
+  disconnect: function() {
+    
   }
 });
 
