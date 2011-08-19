@@ -94,6 +94,7 @@ app.get('/rooms/new', login_required, function(req, res){
 });
 
 app.post("/rooms", login_required, function(req, res){
+  console.log(req);
   var room = new GamePlay(req.params["room"]);
   Store.Rooms.push(room);
   res.redirect('/rooms/'+room.id);

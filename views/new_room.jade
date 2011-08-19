@@ -1,11 +1,11 @@
 h1 New Room
-form
+form(action='/rooms', method='post')
   p
     label Name
-    input(type="text")
+    input(type="text", name='room[name]')
   p
     label Max Players
-    input(type="text")
+    input(type="text", name='room[maxPlayers]')
   p
     label Map
     select

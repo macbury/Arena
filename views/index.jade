@@ -1,10 +1,10 @@
 h1 Arena Rooms
-
+a(href='/rooms/new') Add Room
 
 ul
   - each room in rooms
     li
-      = room.id + " "
+      = room.get('name') + " "
       a(href='/rooms/'+room.id) Enter Game
       
 h2 Arena Plauers
