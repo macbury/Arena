@@ -1,0 +1,13 @@
+script(src="/socket.io/socket.io.js")
+script  
+  var socket = io.connect('http://localhost',{
+    query: "access_token=abcdefg"
+  });
+  
+  socket.on('connect', function () {
+    //socket.emit("room:create", { name: "PlayGround" });
+  });
+  
+  socket.on('error', function (reason){
+    console.error('Unable to connect Socket.IO', reason);
+  });

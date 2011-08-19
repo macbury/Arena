@@ -30,7 +30,11 @@ GamePlay = GameObject.extend({
     var deltaTime = currentTime - this.lastTick;
     this.lastTick = currentTime;
     this.trigger('update',deltaTime);
-  }
+  },
+  
+  join: function(player) {
+    
+  },
 });
 
 

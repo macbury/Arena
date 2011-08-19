@@ -94,16 +94,45 @@ app.get('/rooms/new', login_required, function(req, res){
 });
 
 app.post("/rooms", login_required, function(req, res){
-  console.log(req);
-  var room = new GamePlay(req.params["room"]);
+  console.log(req.params);
+  console.log(req.body.room);
+  var room = new GamePlay(req.body.room);
   Store.Rooms.push(room);
   res.redirect('/rooms/'+room.id);
 });
 
 app.get('/rooms/:id', login_required, function(req, res){
-  res.render('new_room', {});
+  var room = Store.Rooms[0];//_.detect(Store.Rooms, function(r){ return parseInt(r.id) == parseInt(req.params['id']) });
+  if (room) {
+    res.render('play', {});
+  } else {
+    throw new NotFound;
+  }
 });
 
 app.listen(3000);
-io.listen(app);
+socket = io.listen(app);
+
+socket.configure(function (){
+  socket.set('authorization', function (handshakeData, callback) {
+    console.log('authorizing...');
+    console.log(handshakeData);
+    
+    if (sid) {
+      callback(null, sid);
+    } else {
+      callback('unauthorized');
+    }
+  });
+});
+
+socket.sockets.on('connection', function (client) {
+  //console.log(client.request); 
+  /*socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });*/
+});
+
+
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

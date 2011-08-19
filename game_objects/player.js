@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var GameObject = require("./game_object").GameObject;
+var Base = require("./base_helpers");
 
 var Player = GameObject.extend({
   x: 0,
