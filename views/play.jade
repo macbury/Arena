@@ -6,6 +6,9 @@ script
   
   socket.on('connect', function () {
     //socket.emit("room:create", { name: "PlayGround" });
+    socket.on('server:delta', function(delta){
+      console.log(delta);
+    });
   });
   
   socket.on('error', function (reason){

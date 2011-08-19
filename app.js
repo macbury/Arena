@@ -123,24 +123,26 @@ socket = io.listen(app);
 
 socket.configure(function (){
   socket.set('authorization', function (handshakeData, callback) {
-    console.log('authorizing...');
-    var sid = handshakeData.query.sid;
-    console.log(sid);
-    if (sid) {
-      callback(null, sid);
+    var player = _.detect(Store.Players, function(p){ return p.get('sid') == handshakeData.query.sid });
+    if (player) {
+      console.log("Authorized "+player.get('name')+ " with sid "+player.get('sid'));
+      callback(null, player);
     } else {
+      console.log("UnAuthorized ");
       callback('unauthorized');
     }
   });
 });
 
 socket.sockets.on('connection', function (client) {
+  var player = _.detect(Store.Players, function(p){ return p.get('sid') == client.handshake.query.sid });
+  console.log("Player "+player.get('name')+ " have connected");
+  player.connect(client);
   //console.log(socket.handshake.sid); /
   /*socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
     console.log(data);
   });*/
 });
-
 
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

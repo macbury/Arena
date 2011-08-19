@@ -11,6 +11,7 @@ var Player = GameObject.extend({
   
   maxHealth: 100,
   health: 0,
+  client_socket: null,
   
   attributes: {
     name: "Anynomus",
@@ -42,8 +43,24 @@ var Player = GameObject.extend({
     }
   },
   
+  send: function(event, data) {
+    if (this.client_socket) {
+      this.client_socket.emit(event, data);
+    } else {
+      
+    }
+  },
+  
+  connect: function(client_socket) {
+    this.disconnect();
+    this.client_socket = client_socket;
+  },
+  
   disconnect: function() {
-    
+    if(this.client_socket) {
+      this.client_socket.disconnect();
+    }
+    this.client_socket = null;
   }
 });
 

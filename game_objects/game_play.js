@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var GameObject = require("./game_object").GameObject;
 var Config = {
-  updatesPerSecond: 20
+  updatesPerSecond: 1
 };
 
 GamePlay = GameObject.extend({
@@ -23,7 +23,9 @@ GamePlay = GameObject.extend({
   },
   
   update: function(dt) {
-    
+    _.each(this.players, function(player) {
+      player.send("server:delta", dt);
+    });
   },
   
   findPlayer: function(player) {
@@ -38,7 +40,7 @@ GamePlay = GameObject.extend({
     var currentTime = new Date() * 1;
     var deltaTime = currentTime - this.lastTick;
     this.lastTick = currentTime;
-    this.trigger('update',deltaTime);
+    this.update(deltaTime);
   },
   
   enter: function(player) {
